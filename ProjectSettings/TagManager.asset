@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Fruit
+  - Item
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - mylayer
+  - Water
+  - UI
+  - bglayer
+  - pathlayer
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: bglayer
+    uniqueID: 3426170637
+    locked: 0
+  - name: mylayer
+    uniqueID: 1432558581
+    locked: 0
+  - name: pathlayer
+    uniqueID: 2469197591
+    locked: 0
