@@ -22,6 +22,11 @@ public class Closet : MonoBehaviour
     private GameObject wrongObject;
     public Dictionary<String, Vector3> initial_positions = new Dictionary<String, Vector3>();
     private int counter = 0;
+    private static string parent_path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
+    // create logs path which is ../Resources/
+    private string logs_path = Path.Combine(parent_path, "Resources");
+
+
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -86,6 +91,7 @@ public class Closet : MonoBehaviour
                 }
                 if (emptySlotIndex != -1)
                 {
+                    writeLog(gameManager.itemsLearned[0], "Correct_target", gameManager.itemsLearned[0]);
                     isSlotEmpty[emptySlotIndex] = false;
                     StartCoroutine(WaitAndReplace(other, emptySlotIndex));
                     isAudioPlaying = true;
@@ -113,6 +119,7 @@ public class Closet : MonoBehaviour
                 }
                 if (emptySlotIndex != -1)
                 {
+                    writeLog(gameManager.itemsLearned[0], "Correct_target", gameManager.itemsLearned[0]);
                     isSlotEmpty[emptySlotIndex] = false;
                     StartCoroutine(WaitAndReplace(other, emptySlotIndex));
                     isAudioPlaying = true;
@@ -151,15 +158,34 @@ public class Closet : MonoBehaviour
         else
             gameManager.fruitsLearned.RemoveAt(0);
 
-        if (counter == 3 && SceneManager.GetActiveScene().name.Contains("School"))
+        if (counter == 4 && SceneManager.GetActiveScene().name.Contains("School"))
         {
-            Debug.Log("Am I even here?");
             SceneManager.LoadScene("FruitsTesting");
         }
-        else
+        else if (counter == 4 && SceneManager.GetActiveScene().name.Contains("Fruits"))
+        { 
             Application.Quit();
+        }
+            
 
         PlayInstruction();
+    }
+
+    private void writeLog(string target_name, string successfull_action, string target_of_act)
+    {
+        var scene = SceneManager.GetActiveScene().name.Contains("Fruits") ? "Fruits" : "School";
+
+
+        /*var lines = System.IO.File.ReadAllLines(Path.Combine(Application.persistentDataPath, "interaction_log.csv"));
+        System.IO.File.WriteAllLines(Path.Combine(Application.persistentDataPath, "interaction_log.csv"), lines.Take(lines.Length - 1).ToArray());
+        
+        StreamWriter csv_writer = new StreamWriter(Path.Combine(Application.persistentDataPath, "interaction_log.csv"), true);
+        csv_writer.WriteLine(DateTime.Now.ToString("yyyy-MM-dd:HH:mm:ss") + ";" + scene + ";Testing;" + target_name + ";" + successfull_action + ";" + target_of_act);
+        csv_writer.Close();*/
+
+        StreamWriter csv_writer = new StreamWriter("Assets/Resources/interaction_log.csv", true);
+        csv_writer.WriteLine(DateTime.Now.ToString("yyyy-MM-dd:HH:mm:ss") + ";" + scene + ";Testing;" + target_name + ";" + successfull_action);
+        csv_writer.Close();
     }
 
     private void Shuffle(List<String> ts)

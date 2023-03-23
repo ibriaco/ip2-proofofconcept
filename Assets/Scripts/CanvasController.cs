@@ -15,9 +15,10 @@ public class CanvasController : MonoBehaviour
     private int currentChildIndex = 0;
     private int maxChildIndex;
     private GameObject[] children;
-
     private float timeUntilNextChild = 5f;
     private float timePassed = 0f;
+
+    
 
     void Start()
     {
@@ -63,11 +64,10 @@ public class CanvasController : MonoBehaviour
             currentChildIndex++;
             if (currentChildIndex > maxChildIndex)
             {
-                if (!File.Exists(Path.Combine(Application.persistentDataPath, "interaction_log.csv")))
+                if (!File.Exists("Assets/Resources/interaction_log.csv"))
                 {
-                    StreamWriter csv_writer = new StreamWriter(Path.Combine(Application.persistentDataPath, "interaction_log.csv"), true);
-                    csv_writer.WriteLine("Date;Scene;Learning_modality;Click_target;Action;Target_object");
-                    csv_writer.Flush();
+                    StreamWriter csv_writer = new StreamWriter("Assets/Resources/interaction_log.csv", true);
+                    csv_writer.WriteLine("Date;Scene;Learning_modality;Click_target;Successful_action");
                     csv_writer.Close();
                 }
 
