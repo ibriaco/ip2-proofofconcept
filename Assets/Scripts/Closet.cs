@@ -71,9 +71,10 @@ public class Closet : MonoBehaviour
         wrongObject = other.gameObject;
         if (SceneManager.GetActiveScene().name.Contains("School"))
         {
-            counter++;
             if (other.name.Equals(gameManager.itemsLearned[0]))
             {
+                counter++;
+                Debug.Log(counter);
                 int emptySlotIndex = -1;
                 for (int i = 0; i < isSlotEmpty.Length; i++)
                 {
@@ -97,9 +98,10 @@ public class Closet : MonoBehaviour
         }
         else
         {
-            counter++;
             if (other.name.Equals(gameManager.fruitsLearned[0]))
             {
+                counter++;
+                Debug.Log(counter);
                 int emptySlotIndex = -1;
                 for (int i = 0; i < isSlotEmpty.Length; i++)
                 {
@@ -145,15 +147,19 @@ public class Closet : MonoBehaviour
         isAudioPlaying = false;
         if (SceneManager.GetActiveScene().name.Contains("School"))
             gameManager.itemsLearned.RemoveAt(0);
+
         else
             gameManager.fruitsLearned.RemoveAt(0);
 
-        if (counter == 4 && SceneManager.GetActiveScene().name.Contains("School"))
+        if (counter == 3 && SceneManager.GetActiveScene().name.Contains("School"))
         {
+            Debug.Log("Am I even here?");
             SceneManager.LoadScene("FruitsTesting");
         }
         else
             Application.Quit();
+
+        PlayInstruction();
     }
 
     private void Shuffle(List<String> ts)

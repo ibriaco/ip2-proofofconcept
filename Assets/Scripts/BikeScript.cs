@@ -10,7 +10,7 @@ public class BikeScript : MonoBehaviour
     public Vector3 pointC;
     public Vector3 pointD;
     public Vector3 pointE;
-    public float speed = 0.35f;
+    public float speed = 0.45f;
     private GameObject kindergarten;
     public AudioSource audioSource;
     public AudioClip audioClip;

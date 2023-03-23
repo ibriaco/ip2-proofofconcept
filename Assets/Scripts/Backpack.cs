@@ -22,6 +22,7 @@ public class Backpack : MonoBehaviour
 
     void Start()
     {
+        sceneType = random.Next(0, 2) == 0;
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         fruits = new List<GameObject>();
         pickedFruitsIndex = new List<int>();
