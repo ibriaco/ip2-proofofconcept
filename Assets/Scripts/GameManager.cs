@@ -44,11 +44,17 @@ public class GameManager : MonoBehaviour
         itemsLearned = new List<String>();
         itemsUnlearned = new List<String>();
 
-        if (!File.Exists(Path.Combine(Application.persistentDataPath, "interaction_log.csv")))
+        /*if (!File.Exists(Path.Combine(Application.persistentDataPath, "interaction_log.csv")))
         {
             StreamWriter csv_writer = new StreamWriter(Path.Combine(Application.persistentDataPath, "interaction_log.csv"), true);
             csv_writer.WriteLine("Date;Scene;Learning_modality;Click_target;Action;Target_object");
             csv_writer.Flush();
+            csv_writer.Close();
+        }*/
+        if (!File.Exists("Assets/Resources/interaction_log.csv"))
+        {
+            StreamWriter csv_writer = new StreamWriter("Assets/Resources/interaction_log.csv", true);
+            csv_writer.WriteLine("Date;Scene;Learning_modality;Click_target;Successful_action");
             csv_writer.Close();
         }
         DontDestroyOnLoad(this);

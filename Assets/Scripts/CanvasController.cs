@@ -67,7 +67,7 @@ public class CanvasController : MonoBehaviour
                 if (!File.Exists("Assets/Resources/interaction_log.csv"))
                 {
                     StreamWriter csv_writer = new StreamWriter("Assets/Resources/interaction_log.csv", true);
-                    csv_writer.WriteLine("Date;Scene;Learning_modality;Click_target;Successful_action");
+                    csv_writer.WriteLine("Date;Scene;Learning_modality;Click_target;Successful_action;Target_object");
                     csv_writer.Close();
                 }
 

@@ -200,10 +200,8 @@ public class Backpack : MonoBehaviour
         var learning_mode = SceneManager.GetActiveScene().name.Contains("Passive") ? "Passive" : "Active";
 
         var lines = System.IO.File.ReadAllLines("Assets/Resources/interaction_log.csv");
-        if(lines.Length>1)
-            System.IO.File.WriteAllLines("Assets/Resources/interaction_log.csv", lines.Take(lines.Length - 1).ToArray());
-        else
-            System.IO.File.WriteAllLines("Assets/Resources/interaction_log.csv", lines.Take(lines.Length).ToArray());
+        System.IO.File.WriteAllLines("Assets/Resources/interaction_log.csv", lines.Take(lines.Length - 1).ToArray());
+
         StreamWriter csv_writer = new StreamWriter("Assets/Resources/interaction_log.csv", true);
         csv_writer.WriteLine(DateTime.Now.ToString("yyyy-MM-dd:HH:mm:ss") + ";" + scene + ";" + learning_mode + ";" +
                              target_name + ";" + successfull_action + ";None");

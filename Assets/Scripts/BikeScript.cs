@@ -15,7 +15,7 @@ public class BikeScript : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip audioClip;
     public bool hasMoved = false;
-    private int counter = 0;
+    //private int counter = 0;
 
     void Start()
     {
