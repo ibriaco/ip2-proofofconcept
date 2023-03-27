@@ -194,7 +194,7 @@ public class Backpack : MonoBehaviour
         return isAudioPlaying;
     }
 
-    private void writeLog(string target_name, string successfull_action)
+    /*private void writeLog(string target_name, string successfull_action)
     {
         var scene = SceneManager.GetActiveScene().name.Contains("Fruits") ? "Fruits" : "School";
         var learning_mode = SceneManager.GetActiveScene().name.Contains("Passive") ? "Passive" : "Active";
@@ -206,7 +206,7 @@ public class Backpack : MonoBehaviour
         csv_writer.WriteLine(DateTime.Now.ToString("yyyy-MM-dd:HH:mm:ss") + ";" + scene + ";" + learning_mode + ";" +
                              target_name + ";" + successfull_action + ";None");
         csv_writer.Close();
-    }
+    }*/
 
     private void ListAdjustment(List<String> orgList, List<String> toRemove)
     {

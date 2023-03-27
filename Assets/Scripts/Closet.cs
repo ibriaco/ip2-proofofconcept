@@ -89,7 +89,7 @@ public class Closet : MonoBehaviour
                 }
                 if (emptySlotIndex != -1)
                 {
-                    writeLog(other.name, "Correct_target", other.name);
+                    //writeLog(other.name, "Correct_target", other.name);
                     isSlotEmpty[emptySlotIndex] = false;
                     StartCoroutine(WaitAndReplace(other, emptySlotIndex));
                     isAudioPlaying = true;
@@ -117,7 +117,7 @@ public class Closet : MonoBehaviour
                 }
                 if (emptySlotIndex != -1)
                 {
-                    writeLog(other.name, "Correct_target", other.name);
+                    //writeLog(other.name, "Correct_target", other.name);
                     isSlotEmpty[emptySlotIndex] = false;
                     StartCoroutine(WaitAndReplace(other, emptySlotIndex));
                     isAudioPlaying = true;
@@ -168,7 +168,7 @@ public class Closet : MonoBehaviour
             PlayInstruction();
     }
 
-    private void writeLog(string target_name, string successfull_action, string target_of_act)
+    /*private void writeLog(string target_name, string successfull_action, string target_of_act)
     {
         var scene = SceneManager.GetActiveScene().name.Contains("Fruits") ? "Fruits" : "School";
 
@@ -178,7 +178,7 @@ public class Closet : MonoBehaviour
         StreamWriter csv_writer = new StreamWriter("Assets/Resources/interaction_log.csv", true);
         csv_writer.WriteLine(DateTime.Now.ToString("yyyy-MM-dd:HH:mm:ss") + ";" + scene + ";Testing;" + target_name + ";" + successfull_action + ";" + target_of_act);
         csv_writer.Close();
-    }
+    }*/
 
     private void Shuffle(List<String> ts)
     {

@@ -1231,6 +1231,7 @@ MonoBehaviour:
   - {fileID: 1783024346}
   isSlotEmpty: 
   maxFruitsInPassiveMode: 4
+  sceneType: 1
 --- !u!50 &1163800033
 Rigidbody2D:
   serializedVersion: 4
