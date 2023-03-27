@@ -8,6 +8,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = System.Random;
 using UnityEngine.UI;
+using Firebase.Storage;
+using System.Text;
 
 public class GameManager : MonoBehaviour
 {
@@ -44,12 +46,6 @@ public class GameManager : MonoBehaviour
         itemsLearned = new List<String>();
         itemsUnlearned = new List<String>();
 
-        /*if (!File.Exists("Assets/Resources/interaction_log.csv"))
-        {
-            StreamWriter csv_writer = new StreamWriter("Assets/Resources/interaction_log.csv", true);
-            csv_writer.WriteLine("Date;Scene;Learning_modality;Click_target;Successful_action");
-            csv_writer.Close();
-        }*/
         DontDestroyOnLoad(this);
     }
 

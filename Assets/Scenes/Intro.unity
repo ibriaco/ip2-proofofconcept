@@ -398,6 +398,9 @@ MonoBehaviour:
   fruitsUnlearned: []
   itemsLearned: []
   itemsUnlearned: []
+  sceneName: 0
+  sceneType: 0
+  skipper: 0
 --- !u!1 &766887438
 GameObject:
   m_ObjectHideFlags: 0
@@ -667,7 +670,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 9fd2c6750d324497ea522e77280af7ef, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 67ba23519f3fa4784aa1860f3489476c, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -767,7 +770,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvas: {fileID: 1237066208}
   backgroundAudio: {fileID: 1237066210}
-  nextSceneName: FruitsLearning
   alarmChild: {fileID: 0}
 --- !u!1 &1407079486
 GameObject:
