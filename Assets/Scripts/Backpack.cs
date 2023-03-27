@@ -21,8 +21,8 @@ public class Backpack : MonoBehaviour
     private int counter = 0;
     private static readonly System.Random random = new System.Random();
     public bool sceneType = random.Next(0, 2) == 0; //active or passive
-    private static string parent_path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
-    private string logs_path = Path.Combine(parent_path, "Resources");
+    //private static string parent_path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
+    //private string logs_path = Path.Combine(parent_path, "Resources");
 
     void Start()
     {
@@ -114,7 +114,6 @@ public class Backpack : MonoBehaviour
             }
             if (emptySlotIndex != -1)
             {
-                writeLog(other.gameObject.name, "Picked");
                 gameManager.fruitsLearned.Add(other.gameObject.name);
                 isSlotEmpty[emptySlotIndex] = false;
                 StartCoroutine(WaitAndReplace(other, emptySlotIndex));
@@ -134,7 +133,6 @@ public class Backpack : MonoBehaviour
             }
             if (emptySlotIndex != -1)
             {
-                writeLog(other.gameObject.name, "Picked");
                 gameManager.itemsLearned.Add(other.gameObject.name);
                 isSlotEmpty[emptySlotIndex] = false;
                 StartCoroutine(WaitAndReplace(other, emptySlotIndex));

@@ -18,6 +18,7 @@ public class Closet : MonoBehaviour
     private GameObject [] items;
     private GameObject[] fruits;
     private string audioPath;
+    private string repeatAudio;
     private AudioSource _source;
     private GameObject wrongObject;
     public Dictionary<String, Vector3> initial_positions = new Dictionary<String, Vector3>();
@@ -76,6 +77,7 @@ public class Closet : MonoBehaviour
         {
             if (other.name.Equals(gameManager.itemsLearned[0]))
             {
+                attempts = 0;
                 counter++;
                 Debug.Log(counter);
                 int emptySlotIndex = -1;
@@ -95,8 +97,20 @@ public class Closet : MonoBehaviour
                     isAudioPlaying = true;
                 }
             }
-            else
+            else if (!other.name.Equals(gameManager.itemsLearned[0]) && attempts == 0)
             {
+                attempts++;
+                repeatAudio = "audio/" + "that_is_not_" + gameManager.itemsLearned[0].ToLower();
+                _source.PlayOneShot((AudioClip)Resources.Load(repeatAudio));
+                isAudioPlaying = false;
+                Invoke("ResetPosition", 2.0f);
+            }
+            else if (!other.name.Equals(gameManager.itemsLearned[0]) && attempts > 0)
+            {
+                attempts++;
+                repeatAudio = "audio/" + "that_is_not_" + gameManager.itemsLearned[0].ToLower();
+                _source.PlayOneShot((AudioClip)Resources.Load(repeatAudio));
+                isAudioPlaying = false;
                 Invoke("ResetPosition", 2.0f);
             }
         }
@@ -123,8 +137,20 @@ public class Closet : MonoBehaviour
                     isAudioPlaying = true;
                 }
             }
-            else
+            else if (!other.name.Equals(gameManager.fruitsLearned[0]) && attempts == 0)
             {
+                attempts++;
+                repeatAudio = "audio/" + "that_is_not_" + gameManager.fruitsLearned[0].ToLower();
+                _source.PlayOneShot((AudioClip)Resources.Load(repeatAudio));
+                isAudioPlaying = false;
+                Invoke("ResetPosition", 2.0f);
+            }
+            else if (!other.name.Equals(gameManager.fruitsLearned[0]) && attempts > 0)
+            {
+                attempts++;
+                repeatAudio = "audio/" + "that_is_not_" + gameManager.fruitsLearned[0].ToLower();
+                _source.PlayOneShot((AudioClip)Resources.Load(repeatAudio));
+                isAudioPlaying = false;
                 Invoke("ResetPosition", 2.0f);
             }
         }
@@ -134,6 +160,7 @@ public class Closet : MonoBehaviour
     {
         wrongObject.transform.position = initial_positions[wrongObject.name];
     }
+
 
     IEnumerator WaitAndReplace(Collider2D other, int emptySlotIndex)
     {
