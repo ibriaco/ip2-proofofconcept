@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/FruitsTesting.unity
     guid: 8b2e53a9b72b84e158f0e25e98ed873e
+  - enabled: 1
+    path: Assets/Scenes/TransitionToLunch.unity
+    guid: 1796312a77e66401288e18b51420ab05
   m_configObjects: {}

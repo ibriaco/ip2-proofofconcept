@@ -22,6 +22,8 @@ public class Closet : MonoBehaviour
     private AudioSource _source;
     private GameObject wrongObject;
     public Dictionary<String, Vector3> initial_positions = new Dictionary<String, Vector3>();
+    private float timeUntilNextChild = 5f;
+    private float timePassed = 0f;
     private int counter = 0;
 
 
@@ -57,6 +59,8 @@ public class Closet : MonoBehaviour
 
         PlayInstruction();
     }
+
+    
 
     private void PlayInstruction()
     {
@@ -164,6 +168,7 @@ public class Closet : MonoBehaviour
 
     IEnumerator WaitAndReplace(Collider2D other, int emptySlotIndex)
     {
+        
         yield return new WaitForSeconds(2);
         AudioSource audioSource = GetComponent<AudioSource>();
         audioSource.clip = Resources.Load<AudioClip>("audio/twinkle");
@@ -185,7 +190,7 @@ public class Closet : MonoBehaviour
 
         if (counter == 4 && SceneManager.GetActiveScene().name.Contains("School"))
         {
-            SceneManager.LoadScene("FruitsTesting");
+            SceneManager.LoadScene("TransitionToLunch");
         }
         else if (counter == 4 && SceneManager.GetActiveScene().name.Contains("Fruits"))
         { 
@@ -194,18 +199,6 @@ public class Closet : MonoBehaviour
         else
             PlayInstruction();
     }
-
-    /*private void writeLog(string target_name, string successfull_action, string target_of_act)
-    {
-        var scene = SceneManager.GetActiveScene().name.Contains("Fruits") ? "Fruits" : "School";
-
-        var lines = System.IO.File.ReadAllLines("Assets/Resources/interaction_log.csv");
-        System.IO.File.WriteAllLines("Assets/Resources/interaction_log.csv", lines.Take(lines.Length - 1).ToArray());
-
-        StreamWriter csv_writer = new StreamWriter("Assets/Resources/interaction_log.csv", true);
-        csv_writer.WriteLine(DateTime.Now.ToString("yyyy-MM-dd:HH:mm:ss") + ";" + scene + ";Testing;" + target_name + ";" + successfull_action + ";" + target_of_act);
-        csv_writer.Close();
-    }*/
 
     private void Shuffle(List<String> ts)
     {

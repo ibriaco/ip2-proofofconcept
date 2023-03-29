@@ -8,7 +8,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = System.Random;
 using UnityEngine.UI;
-using Firebase.Storage;
 using System.Text;
 
 public class GameManager : MonoBehaviour
@@ -26,6 +25,10 @@ public class GameManager : MonoBehaviour
     //private static string parent_path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
     // create logs path which is ../Resources/
     //private string logs_path = Path.Combine(parent_path, "Resources");
+
+    //this is not bla bla bla please give it bla bla bla is fired immediately
+    //no objects appear in the last scene if not the pomegranate
+    //repeat the instruction for testing if user clicks on top right button
 
     private void Awake()
     {

@@ -770,7 +770,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvas: {fileID: 1237066208}
   backgroundAudio: {fileID: 1237066210}
-  alarmChild: {fileID: 0}
+  alarmChild: {fileID: 1407079486}
+  canProceed: 0
 --- !u!1 &1407079486
 GameObject:
   m_ObjectHideFlags: 0
@@ -805,10 +806,10 @@ RectTransform:
   m_Father: {fileID: 2068067666}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -359.28113, y: 221.5857}
-  m_SizeDelta: {x: -2304.8025, y: -1287.0088}
+  m_AnchorMin: {x: 0.27351263, y: 0.5684028}
+  m_AnchorMax: {x: 0.36913732, y: 0.73240286}
+  m_AnchoredPosition: {x: -3.5482178, y: -1.3012695}
+  m_SizeDelta: {x: -2.2683105, y: 0.3560791}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1407079488
 MonoBehaviour:

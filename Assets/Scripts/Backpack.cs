@@ -141,6 +141,21 @@ public class Backpack : MonoBehaviour
         }
     }
 
+    IEnumerator PlayAudio(string pathforaudio)
+    {
+        AudioSource audioSource = GetComponent<AudioSource>();
+        audioSource.clip = Resources.Load<AudioClip>(pathforaudio);
+        audioSource.Play();
+        while (audioSource.isPlaying)
+        {
+            yield return null;
+        }
+        if(SceneManager.GetActiveScene().name.Contains("School"))
+            SceneManager.LoadScene("FruitsLearning");
+        else
+            SceneManager.LoadScene("SchoolLearning");
+    }
+
     IEnumerator WaitAndReplace(Collider2D other, int emptySlotIndex)
     {
         yield return new WaitForSeconds(2);
@@ -171,13 +186,15 @@ public class Backpack : MonoBehaviour
         {
             gameManager.updateSkipper();
             ListAdjustment(gameManager.itemsUnlearned, gameManager.itemsLearned);
-            SceneManager.LoadScene("FruitsLearning");
+            StartCoroutine(PlayAudio("audio/good_school"));
+            
         }
         else if(counter == 4 && SceneManager.GetActiveScene().name.Contains("Fruit") && gameManager.skipper == 0)
         {
             gameManager.updateSkipper();
             ListAdjustment(gameManager.fruitsUnlearned, gameManager.fruitsLearned);
-            SceneManager.LoadScene("SchoolLearning");
+            StartCoroutine(PlayAudio("audio/good_fruits"));
+            
         }
         else if (counter == 4 && gameManager.skipper == 1)
         {
@@ -192,19 +209,7 @@ public class Backpack : MonoBehaviour
         return isAudioPlaying;
     }
 
-    /*private void writeLog(string target_name, string successfull_action)
-    {
-        var scene = SceneManager.GetActiveScene().name.Contains("Fruits") ? "Fruits" : "School";
-        var learning_mode = SceneManager.GetActiveScene().name.Contains("Passive") ? "Passive" : "Active";
-
-        var lines = System.IO.File.ReadAllLines("Assets/Resources/interaction_log.csv");
-        System.IO.File.WriteAllLines("Assets/Resources/interaction_log.csv", lines.Take(lines.Length - 1).ToArray());
-
-        StreamWriter csv_writer = new StreamWriter("Assets/Resources/interaction_log.csv", true);
-        csv_writer.WriteLine(DateTime.Now.ToString("yyyy-MM-dd:HH:mm:ss") + ";" + scene + ";" + learning_mode + ";" +
-                             target_name + ";" + successfull_action + ";None");
-        csv_writer.Close();
-    }*/
+    
 
     private void ListAdjustment(List<String> orgList, List<String> toRemove)
     {
