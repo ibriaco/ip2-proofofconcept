@@ -1,0 +1,36 @@
+{
+  "project_info": {
+    "project_number": "129070665512",
+    "project_id": "integratedproject2-eladda",
+    "storage_bucket": "integratedproject2-eladda.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:129070665512:ios:973a82cc5d4372339a0a1d",
+        "android_client_info": {
+          "package_name": "com.eladda.newIP2"
+        }
+      },
+      "api_key": [
+        {
+          "current_key": "AIzaSyACLDm8O1d0LFxkvAoZZ69suKcFgox6FNM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 0
+        },
+        "appinvite_service": {
+          "status": 1
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "129070665512-8rr2m9js3da6vbgtohkdt115il3kic20.apps.googleusercontent.com"
+        }
+      ]
+    }
+  ],
+  "configuration_version": "1"
+}

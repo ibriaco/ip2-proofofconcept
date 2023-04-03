@@ -56,7 +56,7 @@ public class CanvasController : MonoBehaviour
         {
             if (canProceed)
             {
-                Debug.Log("if can proceed");
+                //Debug.Log("if can proceed");
                 children[currentChildIndex].SetActive(false);
                 currentChildIndex++;
                 if (currentChildIndex > maxChildIndex)
@@ -73,7 +73,7 @@ public class CanvasController : MonoBehaviour
             currentChildIndex++;
             if (currentChildIndex > maxChildIndex && canProceed == true)
             {
-                Debug.Log("prima del if-else");
+                //Debug.Log("prima del if-else");
                 if (gameManager.sceneName)
                     SceneManager.LoadScene("FruitsLearning");
                 else
@@ -98,7 +98,6 @@ public class CanvasController : MonoBehaviour
     public void AllowProceed()
     {
         StartCoroutine(PlayAudio());
-        Debug.Log("proceding");
         canProceed = true;
     }
 }

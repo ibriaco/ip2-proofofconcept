@@ -6,6 +6,9 @@ using System;
 using System.IO;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using Firebase.Storage;
+using System.Text;
+using System.Threading.Tasks;
 
 public class Backpack : MonoBehaviour
 {
@@ -20,12 +23,14 @@ public class Backpack : MonoBehaviour
     private GameManager gameManager;
     private int counter = 0;
     private static readonly System.Random random = new System.Random();
-    public bool sceneType = random.Next(0, 2) == 0; //active or passive
-    //private static string parent_path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
-    //private string logs_path = Path.Combine(parent_path, "Resources");
+    public bool sceneType = random.Next(0, 2) == 0;
+    StorageReference csv_ref;
+    StorageReference storageReference;
 
     void Start()
     {
+        FirebaseStorage storage = FirebaseStorage.DefaultInstance;
+        storageReference = storage.GetReferenceFromUrl("gs://integratedproject2-eladda.appspot.com");
         sceneType = random.Next(0, 2) == 0;
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         fruits = new List<GameObject>();
@@ -114,6 +119,7 @@ public class Backpack : MonoBehaviour
             }
             if (emptySlotIndex != -1)
             {
+                writeLog(other.gameObject.name, "Picked");
                 gameManager.fruitsLearned.Add(other.gameObject.name);
                 isSlotEmpty[emptySlotIndex] = false;
                 StartCoroutine(WaitAndReplace(other, emptySlotIndex));
@@ -133,6 +139,7 @@ public class Backpack : MonoBehaviour
             }
             if (emptySlotIndex != -1)
             {
+                writeLog(other.gameObject.name, "Picked");
                 gameManager.itemsLearned.Add(other.gameObject.name);
                 isSlotEmpty[emptySlotIndex] = false;
                 StartCoroutine(WaitAndReplace(other, emptySlotIndex));
@@ -204,12 +211,50 @@ public class Backpack : MonoBehaviour
         }
     }
 
+    private void writeLog(string target_name, string successfull_action)
+    {
+        csv_ref = storageReference.Child("csv/write.csv");
+        
+        var scene = SceneManager.GetActiveScene().name.Contains("Fruits") ? "Fruits" : "School";
+        var learning_mode = SceneManager.GetActiveScene().name.Contains("Passive") ? "Passive" : "Active";
+        
+            csv_ref.GetBytesAsync(10000).ContinueWith(task =>
+        {
+            if (task.IsFaulted || task.IsCanceled)
+            {
+                Debug.Log("Failed to get file contents: " + task.Exception);
+            }
+            else
+            {
+                byte[] existingBytes = task.Result;
+                string newContent = DateTime.Now.ToString("yyyy-MM-dd:HH:mm:ss") + ";" + scene + ";" + learning_mode + ";" +
+                target_name + ";" + successfull_action + ";None\n";
+                byte[] newBytes = Encoding.ASCII.GetBytes(newContent);
+                byte[] updatedBytes = new byte[existingBytes.Length + newBytes.Length];
+                Array.Copy(existingBytes, 0, updatedBytes, 0, existingBytes.Length);
+                Array.Copy(newBytes, 0, updatedBytes, existingBytes.Length, newBytes.Length);
+
+                csv_ref.PutBytesAsync(updatedBytes).ContinueWith(uploadTask =>
+                {
+                    if (uploadTask.IsFaulted || uploadTask.IsCanceled)
+                    {
+                        Debug.Log("Failed to update file: " + uploadTask.Exception);
+                    }
+                    else
+                    {
+                        Debug.Log("File updated successfully");
+                    }
+                });
+            }
+
+        });
+    }
+
+
     public bool IsAudioPlaying()
     {
         return isAudioPlaying;
     }
-
-    
 
     private void ListAdjustment(List<String> orgList, List<String> toRemove)
     {

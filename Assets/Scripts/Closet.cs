@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = System.Random;
 using UnityEngine.UI;
+using Firebase.Storage;
+using System.Text;
 
 public class Closet : MonoBehaviour
 {
@@ -25,11 +27,15 @@ public class Closet : MonoBehaviour
     private float timeUntilNextChild = 5f;
     private float timePassed = 0f;
     private int counter = 0;
+    StorageReference csv_ref;
+    StorageReference storageReference;
 
 
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        FirebaseStorage storage = FirebaseStorage.DefaultInstance;
+        storageReference = storage.GetReferenceFromUrl("gs://integratedproject2-eladda.appspot.com");
         if (SceneManager.GetActiveScene().name.Contains("School"))
         {
             items = GameObject.FindGameObjectsWithTag("Item");
@@ -73,7 +79,6 @@ public class Closet : MonoBehaviour
         isAudioPlaying = false;
     }
 
-    //need to check how many wrong attempts and then highlight (come bohh?) the object
     void OnTriggerEnter2D(Collider2D other)
     {
         wrongObject = other.gameObject;
@@ -95,7 +100,7 @@ public class Closet : MonoBehaviour
                 }
                 if (emptySlotIndex != -1)
                 {
-                    //writeLog(other.name, "Correct_target", other.name);
+                    writeLog(other.name, "Correct_target", other.name);
                     isSlotEmpty[emptySlotIndex] = false;
                     StartCoroutine(WaitAndReplace(other, emptySlotIndex));
                     isAudioPlaying = true;
@@ -103,6 +108,7 @@ public class Closet : MonoBehaviour
             }
             else if (!other.name.Equals(gameManager.itemsLearned[0]) && attempts == 0)
             {
+                writeLog(other.name, "Wrong_target", gameManager.itemsLearned[0]);
                 attempts++;
                 repeatAudio = "audio/" + "that_is_not_" + gameManager.itemsLearned[0].ToLower();
                 _source.PlayOneShot((AudioClip)Resources.Load(repeatAudio));
@@ -111,6 +117,7 @@ public class Closet : MonoBehaviour
             }
             else if (!other.name.Equals(gameManager.itemsLearned[0]) && attempts > 0)
             {
+                writeLog(other.name, "Wrong_target", gameManager.itemsLearned[0]);
                 attempts++;
                 repeatAudio = "audio/" + "that_is_not_" + gameManager.itemsLearned[0].ToLower();
                 _source.PlayOneShot((AudioClip)Resources.Load(repeatAudio));
@@ -135,7 +142,7 @@ public class Closet : MonoBehaviour
                 }
                 if (emptySlotIndex != -1)
                 {
-                    //writeLog(other.name, "Correct_target", other.name);
+                    writeLog(other.name, "Correct_target", other.name);
                     isSlotEmpty[emptySlotIndex] = false;
                     StartCoroutine(WaitAndReplace(other, emptySlotIndex));
                     isAudioPlaying = true;
@@ -143,6 +150,7 @@ public class Closet : MonoBehaviour
             }
             else if (!other.name.Equals(gameManager.fruitsLearned[0]) && attempts == 0)
             {
+                writeLog(other.name, "Wrong_target", gameManager.fruitsLearned[0]);
                 attempts++;
                 repeatAudio = "audio/" + "that_is_not_" + gameManager.fruitsLearned[0].ToLower();
                 _source.PlayOneShot((AudioClip)Resources.Load(repeatAudio));
@@ -151,6 +159,7 @@ public class Closet : MonoBehaviour
             }
             else if (!other.name.Equals(gameManager.fruitsLearned[0]) && attempts > 0)
             {
+                writeLog(other.name, "Wrong_target", gameManager.fruitsLearned[0]);
                 attempts++;
                 repeatAudio = "audio/" + "that_is_not_" + gameManager.fruitsLearned[0].ToLower();
                 _source.PlayOneShot((AudioClip)Resources.Load(repeatAudio));
@@ -193,12 +202,54 @@ public class Closet : MonoBehaviour
             SceneManager.LoadScene("TransitionToLunch");
         }
         else if (counter == 4 && SceneManager.GetActiveScene().name.Contains("Fruits"))
-        { 
+        {
             Application.Quit();
         } 
         else
             PlayInstruction();
     }
+
+    private void writeLog(string target_name, string successfull_action, string target_of_act)
+    {
+        csv_ref = storageReference.Child("csv/write.csv");
+
+        var scene = SceneManager.GetActiveScene().name.Contains("Fruits") ? "Fruits" : "School";
+        gameManager.dragTracer.Add(DateTime.Now.ToString("yyyy-MM-dd:HH:mm:ss") + ";" + scene + ";" + "Testing" + ";" +
+                             target_name + ";" + successfull_action + ";" + target_of_act + "\n");
+        var learning_mode = SceneManager.GetActiveScene().name.Contains("Passive") ? "Passive" : "Active";
+        csv_ref.GetBytesAsync(10000).ContinueWith(task => {
+            if (task.IsFaulted || task.IsCanceled)
+            {
+                Debug.Log("Failed to get file contents: " + task.Exception);
+            }
+            else
+            {
+                byte[] existingBytes = task.Result;
+                string newContent = DateTime.Now.ToString("yyyy-MM-dd:HH:mm:ss") + ";" + scene + ";" + "Testing" + ";" +
+                             target_name + ";" + successfull_action + ";" + target_of_act + "\n";
+                
+
+                byte[] newBytes = Encoding.ASCII.GetBytes(newContent);
+                byte[] updatedBytes = new byte[existingBytes.Length + newBytes.Length];
+                Array.Copy(existingBytes, 0, updatedBytes, 0, existingBytes.Length);
+                Array.Copy(newBytes, 0, updatedBytes, existingBytes.Length, newBytes.Length);
+
+                // Upload the updated byte array to the file
+                csv_ref.PutBytesAsync(updatedBytes).ContinueWith(uploadTask => {
+                    if (uploadTask.IsFaulted || uploadTask.IsCanceled)
+                    {
+                        Debug.Log("Failed to update file: " + uploadTask.Exception);
+                    }
+                    else
+                    {
+                        Debug.Log("File updated successfully");
+                    }
+                });
+            }
+        });
+        
+    }
+
 
     private void Shuffle(List<String> ts)
     {

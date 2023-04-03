@@ -9,6 +9,8 @@ using UnityEngine.SceneManagement;
 using Random = System.Random;
 using UnityEngine.UI;
 using System.Text;
+using Firebase.Storage;
+using System.Threading.Tasks;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,15 +23,8 @@ public class GameManager : MonoBehaviour
     public bool sceneName = random.Next(0, 2) == 0; //fruits or school
     public bool sceneType = random.Next(0, 2) == 0; //active or passive
     public int skipper = 0;
-    // get the parent path of this file
-    //private static string parent_path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
-    // create logs path which is ../Resources/
-    //private string logs_path = Path.Combine(parent_path, "Resources");
-
-    //this is not bla bla bla please give it bla bla bla is fired immediately
-    //no objects appear in the last scene if not the pomegranate
-    //repeat the instruction for testing if user clicks on top right button
-
+    private string path;
+    public List<string> dragTracer;
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -41,16 +36,57 @@ public class GameManager : MonoBehaviour
             instance = this;
         }
     }
-    // Start is called before the first frame update
+
     void Start()
     {
-        fruitsLearned = new List<String>(); //[1,2,3]
+        fruitsLearned = new List<String>();
         fruitsUnlearned = new List<String>();
         itemsLearned = new List<String>();
         itemsUnlearned = new List<String>();
+        dragTracer = new List<string>();
+
+
+        path = "Assets/Resources/write.csv";
+        //string fileName = "write.csv";
+        //string path = Path.Combine(Application.persistentDataPath, fileName);
+        string header = "Date;Scene;Learning_modality;Click_target;Successful_action;Target_object\n";
+
+        FirebaseStorage storage = FirebaseStorage.DefaultInstance;
+
+        StorageReference storageReference = storage.GetReferenceFromUrl("gs://integratedproject2-eladda.appspot.com");
+
+        StorageReference csv_ref = storageReference.Child("csv/write.csv");
+        csv_ref.GetDownloadUrlAsync().ContinueWith(task =>
+        {
+            if (task.IsFaulted || task.IsCanceled)
+            {
+                // File does not exist, so create it and add header row
+                File.WriteAllText(path, header);
+                Debug.Log("File created and header added.");
+            }
+            else
+            {
+                // File already exists, so do nothing
+                Debug.Log("File already exists.");
+            }
+
+            // Upload the file to Firebase Storage
+            byte[] csv_bytes = Encoding.ASCII.GetBytes(File.ReadAllText(path));
+            csv_ref.PutBytesAsync(csv_bytes).ContinueWith(uploadTask => {
+                if (uploadTask.IsFaulted || uploadTask.IsCanceled)
+                {
+                    Debug.Log(uploadTask.Exception.ToString());
+                }
+                else
+                {
+                    Debug.Log("Finished uploading CSV file...");
+                }
+            });
+        });
 
         DontDestroyOnLoad(this);
     }
+
 
     // Update is called once per frame
     void Update()
